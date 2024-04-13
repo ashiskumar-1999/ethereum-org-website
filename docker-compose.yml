@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  ethereumorgwebsite:
+    image: ethereumorgwebsite
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 3000:3000
