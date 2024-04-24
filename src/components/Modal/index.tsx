@@ -1,54 +1,41 @@
 import React from "react"
 import {
   Button,
+  HStack,
   Modal as ChakraModal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
-  type ModalContentProps,
+  ModalContentProps,
   ModalFooter,
   ModalHeader,
   ModalOverlay,
   type ModalProps as ChakraModalProps,
 } from "@chakra-ui/react"
 
-export type ModalProps = ModalContentProps &
-  Pick<ChakraModalProps, "size"> & {
-    children?: React.ReactNode
-    title?: string
-    actionButtonLabel?: string
-    isOpen: boolean
-    setIsOpen: (isOpen: boolean) => void
-  }
+export type ModalProps = ChakraModalProps & {
+  children?: React.ReactNode
+  title?: React.ReactNode
+  actionButtonLabel?: string
+  contentProps?: ModalContentProps
+}
 
 const Modal = ({
   children,
   title,
   actionButtonLabel,
-  isOpen,
-  setIsOpen,
+  contentProps,
   ...restProps
 }: ModalProps) => {
   return (
-    <ChakraModal
-      isOpen={isOpen}
-      onClose={() => setIsOpen(false)}
-      isCentered
-      /* size={size ?? "xl"} */
-      scrollBehavior="inside"
-    >
-      <ModalOverlay bgColor="blackAlpha.700" />
+    <ChakraModal isCentered scrollBehavior="inside" {...restProps}>
+      <ModalOverlay />
 
-      <ModalContent
-        p={8}
-        shadow="md"
-        border="1px"
-        borderColor="border"
-        borderRadius="md"
-        {...restProps}
-      >
-        <ModalHeader>{title}</ModalHeader>
-        <ModalCloseButton />
+      <ModalContent {...contentProps}>
+        <HStack>
+          <ModalHeader>{title}</ModalHeader>
+          <ModalCloseButton />
+        </HStack>
         <ModalBody>{children}</ModalBody>
         {actionButtonLabel && (
           <ModalFooter>
